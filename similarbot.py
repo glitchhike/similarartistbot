@@ -10,6 +10,7 @@ This is a code patchwork
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 import similar
+from config import bot_api
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -32,8 +33,8 @@ def echo(bot, update):
     update.message.reply_text(update.message.text)
 
 
-def suggest(bot, update, args):
-    new_similar = similar.find(args[0])
+def suggest(bot, update):
+    new_similar = similar.find(update.message.text[10:])
     update.message.reply_text(new_similar)
 
 
@@ -43,7 +44,7 @@ def error(bot, update, error):
 
 def main():
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater(config.bot_api)
+    updater = Updater(bot_api)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
@@ -51,10 +52,10 @@ def main():
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
-    #dp.add_handler(CommandHandler("similarto", suggest))
+    dp.add_handler(CommandHandler("similarto", suggest))
 
     # on noncommand i.e message - echo the message on Telegram
-    dp.add_handler(MessageHandler(Filters.text, suggest))
+    #dp.add_handler(MessageHandler(Filters.text, suggest))
 
     # log all errors
     dp.add_error_handler(error)

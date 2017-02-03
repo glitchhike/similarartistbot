@@ -34,7 +34,9 @@ def echo(bot, update):
 
 
 def suggest(bot, update):
-    new_similar = similar.find(update.message.text[10:])
+    #artist=update.message.text
+    print update.message.text
+    new_similar = similar.find(update.message.text[11:])
     update.message.reply_text(new_similar)
 
 

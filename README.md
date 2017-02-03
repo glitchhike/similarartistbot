@@ -1,5 +1,5 @@
 # similarartistbot
 
-a telegram bot that searches for simila artists on lastfm
+a telegram bot that searches for similar artists on lastfm
 
 WARNING: VERY WIP!

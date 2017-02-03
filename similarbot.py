@@ -4,14 +4,7 @@
 # Simple Bot to reply to Telegram messages
 # This program is dedicated to the public domain under the CC0 license.
 """
-This Bot uses the Updater class to handle the bot.
-First, a few handler functions are defined. Then, those functions are passed to
-the Dispatcher and registered at their respective places.
-Then, the bot is started and runs until we press Ctrl-C on the command line.
-Usage:
-Basic Echobot example, repeats messages.
-Press Ctrl-C on the command line or send a signal to the process to stop the
-bot.
+This is a code patchwork
 """
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -39,8 +32,8 @@ def echo(bot, update):
     update.message.reply_text(update.message.text)
 
 
-def suggest(bot, update):
-    new_similar = similar.find(update.message.text)
+def suggest(bot, update, args):
+    new_similar = similar.find(args[0])
     update.message.reply_text(new_similar)
 
 

@@ -30,8 +30,6 @@ def help(bot, update):
 
 
 def suggest(bot, update):
-    #artist=update.message.text
-    print update.message.text
     new_similar = similar.find(update.message.text[11:])
     update.message.reply_text(new_similar)
 
@@ -48,6 +46,7 @@ def main():
     dp = updater.dispatcher
 
     # on different commands - answer in Telegram
+    print update.message.text
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("similarto", suggest))

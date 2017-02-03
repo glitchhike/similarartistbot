@@ -29,10 +29,6 @@ def help(bot, update):
     update.message.reply_text('Help!')
 
 
-def echo(bot, update):
-    update.message.reply_text(update.message.text)
-
-
 def suggest(bot, update):
     #artist=update.message.text
     print update.message.text
@@ -55,9 +51,6 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("similarto", suggest))
-
-    # on noncommand i.e message - echo the message on Telegram
-    #dp.add_handler(MessageHandler(Filters.text, suggest))
 
     # log all errors
     dp.add_error_handler(error)

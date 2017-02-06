@@ -31,8 +31,11 @@ def help(bot, update):
 
 def suggest(bot, update):
     print update.message.text
-    new_similar = similar.find(update.message.text[11:])
-    update.message.reply_text(new_similar)
+    if update.message.text == '/similarto':
+        update.message.reply_text('usage: /similarto artistname')
+    else:
+        new_similar = similar.find(update.message.text[11:])
+        update.message.reply_text(new_similar)
 
 
 def error(bot, update, error):

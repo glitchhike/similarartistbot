@@ -35,8 +35,7 @@ def suggest(bot, update):
         update.message.reply_text('usage: /similarto artistname')
     else:
         new_similar = similar.find(update.message.text[11:])
-        print new_similar
-        update.message.reply_text(new_similar)
+        update.message.reply_text('\n'.join('%s' % i for k, i in enumerate(new_similar)))
 
 
 def error(bot, update, error):

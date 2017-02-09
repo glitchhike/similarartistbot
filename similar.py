@@ -1,6 +1,26 @@
 import config
 import pylast
 
+def check_artist(artist):
+    # last.fm connection
+    lastfm = pylast.LastFMNetwork(api_key=config.api_key, api_secret=config.api_secret)
+
+    try:
+        n = lastfm.get_artist(artist)
+        return True
+    except pylast.WSError:
+        return False
+
+def check_album(artist, album):
+    # last.fm connection
+    lastfm = pylast.LastFMNetwork(api_key=config.api_key, api_secret=config.api_secret)
+
+    try:
+        n = lastfm.get_album(artist, album)
+        return True
+    except pylast.WSError:
+        return False
+
 def find(artist):
     # last.fm connection
     lastfm = pylast.LastFMNetwork(api_key=config.api_key, api_secret=config.api_secret)
@@ -14,3 +34,4 @@ def find(artist):
         new_similar = "artist not found"
 
     return new_similar
+

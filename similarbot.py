@@ -9,6 +9,7 @@ This is a code patchwork
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
+from db import insert_suggestion
 import similar
 from config import bot_api
 
@@ -29,7 +30,7 @@ def help(bot, update):
     update.message.reply_text('Help!')
 
 
-def suggest(bot, update):
+def suggest_similar_artist(bot, update):
     print update.message.text
     if update.message.text == '/similarto':
         update.message.reply_text('usage: /similarto artistname')
@@ -37,6 +38,12 @@ def suggest(bot, update):
         new_similar = similar.find(update.message.text[11:])
         update.message.reply_text('\n'.join('%s' % i for k, i in enumerate(new_similar)))
 
+def record_suggestion(bot, update):
+    if ' - ' in update.message.text:
+        insert_suggestion(update.message)
+        update.message.reply_text('suggestion recorded in the database')
+    else:
+        update.message.reply_text('usage: /suggest Artist - Album')
 
 def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
@@ -52,7 +59,8 @@ def main():
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
-    dp.add_handler(CommandHandler("similarto", suggest))
+    dp.add_handler(CommandHandler("similarto", suggest_similar_artist))
+    dp.add_handler(CommandHandler("suggest", record_suggestion))
 
     # log all errors
     dp.add_error_handler(error)

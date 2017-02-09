@@ -1,5 +1,6 @@
 import config
 import pylast
+import urllib2
 
 def check_artist(artist):
     # last.fm connection
@@ -30,8 +31,10 @@ def find(artist):
         new_similar = lastfm.get_artist(artist).get_similar(limit=config.max_to_add)
         # find all artists that meet min_score
         new_similar = [a[0].name for a in new_similar if a[1] >= config.min_score]
+        similar_image = lastfm.get_artist(new_similar[0]).get_cover_image()
+        response = [new_similar, similar_image]
     except pylast.WSError:
-        new_similar = "artist not found"
+        response = ["artist not found"]
 
-    return new_similar
+    return response
 

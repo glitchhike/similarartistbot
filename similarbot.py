@@ -36,7 +36,11 @@ def suggest_similar_artist(bot, update):
         update.message.reply_text('usage: /similarto artistname')
     else:
         new_similar = similar.find(update.message.text[11:])
-        update.message.reply_text('\n'.join('%s' % i for k, i in enumerate(new_similar)))
+        # update.message.reply_text('\n'.join('%s' % i for k, i in enumerate(new_similar[0])))
+        if len(new_similar)==1:
+           update.message.reply_text(new_similar[0])
+        else:
+            update.message.reply_photo(new_similar[1], new_similar[0][0])
 
 def record_suggestion(bot, update):
     if ' - ' in update.message.text:

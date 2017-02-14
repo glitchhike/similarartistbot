@@ -27,7 +27,12 @@ def start(bot, update):
 
 
 def help(bot, update):
-    update.message.reply_text('Help!')
+    if update.message.text == '/help' or ' - ' not in update.message.text:
+        update.message.reply_text('usage: /help Artist - Album')
+    else:
+        s_a = similar.find_album(update.message.text[6:])
+        update.message.reply_photo(s_a[1], s_a[0])
+
 
 
 def suggest_similar_artist(bot, update):
@@ -35,12 +40,15 @@ def suggest_similar_artist(bot, update):
     if update.message.text == '/similarto':
         update.message.reply_text('usage: /similarto artistname')
     else:
-        new_similar = similar.find(update.message.text[11:])
+        new_similar = similar.find_artist(update.message.text[11:])
         # update.message.reply_text('\n'.join('%s' % i for k, i in enumerate(new_similar[0])))
+
         if len(new_similar)==1:
-           update.message.reply_text(new_similar[0])
+            update.message.reply_text(new_similar[0])
+        elif new_similar[1]==None:
+            update.message.reply_text(new_similar[0] + "\n(no image found)")
         else:
-            update.message.reply_photo(new_similar[1], new_similar[0][0])
+            update.message.reply_photo(new_similar[1], new_similar[0])
 
 def record_suggestion(bot, update):
     if ' - ' in update.message.text:

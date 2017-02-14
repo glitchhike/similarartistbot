@@ -10,8 +10,14 @@ min_score = 0.3333
 # add no more than this many similar artists
 max_to_add = 10
 
-#telegram bot api key
+#[telegram]
+# telegram bot api key
 bot_api = 
 
-#SQLite database url
+#[database]
+# SQLite database url
 db_address = 
+
+#[discogs]
+# discogs personal access token
+discogs_token = 

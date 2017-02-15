@@ -53,7 +53,7 @@ def find_album(text):
     rand_similar = find_artist(s[0])[0]
     albums = lastfm.get_artist(rand_similar).get_top_albums(limit=15)
     a = albums[randint(0,len(albums))][0]
-    i = a.get_cover_image(2)
+    i = a.get_cover_image()
     title = a.artist.get_name(True) + ' - ' + a.title
     
     return [title, i]

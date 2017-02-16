@@ -24,23 +24,28 @@ logger = logging.getLogger(__name__)
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(bot, update):
     update.message.reply_text('Hi!')
-
+    
 
 def help(bot, update):
-    if update.message.text == '/help' or ' - ' not in update.message.text:
+    if update.message.text == '/help' or (' - ' not in update.message.text):
         update.message.reply_text('usage: /help Artist - Album')
     else:
         s_a = similar.find_album(update.message.text[6:])
-        update.message.reply_photo(s_a[1], s_a[0])
-
-
+        #update.message.reply_photo(s_a[1], s_a[0])
+        
+        if len(s_a)==1:
+            update.message.reply_text(s_a[0])
+        elif s_a[1]==None:
+            update.message.reply_text(s_a[0] + "\n(no image found)")
+        else:
+            update.message.reply_photo(s_a[1], s_a[0])
 
 def suggest_similar_artist(bot, update):
     print update.message.text
     if update.message.text == '/similarto':
         update.message.reply_text('usage: /similarto artistname')
     else:
-        new_similar = similar.find_artist(update.message.text[11:])
+        new_similar = similar.similar_artist(update.message.text[11:])
         # update.message.reply_text('\n'.join('%s' % i for k, i in enumerate(new_similar[0])))
 
         if len(new_similar)==1:
@@ -50,12 +55,14 @@ def suggest_similar_artist(bot, update):
         else:
             update.message.reply_photo(new_similar[1], new_similar[0])
 
+
 def record_suggestion(bot, update):
     if ' - ' in update.message.text:
         insert_suggestion(update.message)
         update.message.reply_text('suggestion recorded in the database')
     else:
         update.message.reply_text('usage: /suggest Artist - Album')
+
 
 def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))

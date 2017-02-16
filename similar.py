@@ -23,6 +23,12 @@ def check_album(artist, album):
     except pylast.WSError:
         return False
 
+def find_artist_image(artist):
+    # last.fm connection
+    lastfm = pylast.LastFMNetwork(api_key=config.api_key, api_secret=config.api_secret)
+    
+    return lastfm.get_artist(artist).get_cover_image(2)
+
 def find_artist(artist):
     # last.fm connection
     lastfm = pylast.LastFMNetwork(api_key=config.api_key, api_secret=config.api_secret)
@@ -33,15 +39,21 @@ def find_artist(artist):
         # find all artists that meet min_score
         new_similar = [a[0].name for a in new_similar if a[1] >= config.min_score]
         # randomize choice
-        r = randint(0,len(new_similar))
+        r = randint(0,len(new_similar)-1)
         
-        similar_image = lastfm.get_artist(new_similar[r]).get_cover_image(2)
-        response = [new_similar[r], similar_image]
+        return new_similar[r]
     
     except pylast.WSError:
-        response = ["artist not found"]
+        return "artist not found"
 
-    return response
+def similar_artist(artist):
+    a = find_artist(artist)
+    resp = [a]
+    if "artist not found" not in a:
+        i = find_artist_image(a)
+        resp.append(i)
+    
+    return resp
 
 def find_album(text):
     # last.fm connection
@@ -50,10 +62,12 @@ def find_album(text):
     # split text in artist - album
     s = text.split(' - ', 2)
     
-    rand_similar = find_artist(s[0])[0]
+    rand_similar = find_artist(s[0])
     albums = lastfm.get_artist(rand_similar).get_top_albums(limit=15)
-    a = albums[randint(0,len(albums))][0]
+    a = albums[randint(0,len(albums)-1)][0]
     i = a.get_cover_image()
     title = a.artist.get_name(True) + ' - ' + a.title
-    
+    print title
+    print i
+    print '\n'
     return [title, i]
